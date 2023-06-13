@@ -12,6 +12,7 @@ import (
 	"go/token"
 	"go/types"
 	"io/ioutil"
+	"os"
 	"sort"
 	"strings"
 	"sync"
@@ -44,6 +45,9 @@ func Run(cfgParam string, paths []string) error {
 
 	pkgs, err := load(paths)
 	if err != nil {
+		stdout := os.Stdout
+		fmt.Fprintln(stdout, "Error loading the following paths")
+		fmt.Fprintf(stdout, "%v\n", paths)
 		return errors.WithStack(err)
 	}
 	errs := run(pkgs, cfg)
